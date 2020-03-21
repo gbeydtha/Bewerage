@@ -23,6 +23,7 @@ namespace Bewerage.Models
         {
             ISession session = services.GetRequiredService<IHttpContextAccessor>()?
                 .HttpContext.Session;
+
             var context = services.GetService<AppDbContext>();
             string cartId = session.GetString("CartId") ?? Guid.NewGuid().ToString();
 
@@ -35,6 +36,7 @@ namespace Bewerage.Models
         {
             var shoppingCartItem = _appDbContext.ShoppingCartItems.SingleOrDefault(
                 s => s.Drink.DrinkId == drink.DrinkId && s.ShoppingCartId ==    ShoppingCartId );
+
             if (shoppingCartItem == null)
             {
                 shoppingCartItem = new ShoppingCartItem
@@ -55,6 +57,7 @@ namespace Bewerage.Models
         {
             var shoppingCartItem = _appDbContext.ShoppingCartItems.SingleOrDefault(
                 s=> s.Drink.DrinkId == drink.DrinkId && s.ShoppingCartId == ShoppingCartId);
+
             var localAmount = 0; 
             if(shoppingCartItem != null)
             {
@@ -83,9 +86,8 @@ namespace Bewerage.Models
 
         public void ClearCart()
         {
-            var cartItems = _appDbContext
-                .ShoppingCartItems
-                .Where(cart => cart.ShoppingCartId == ShoppingCartId);
+            var cartItems = _appDbContext.ShoppingCartItems.Where(cart => cart.ShoppingCartId == ShoppingCartId);
+
             _appDbContext.ShoppingCartItems.RemoveRange(cartItems);
             _appDbContext.SaveChanges(); 
         }
