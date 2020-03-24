@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Bewerage.Models;
-using Bewerage.Data.Interfaces;
+﻿using Bewerage.Data.Interfaces;
 using Bewerage.ViewModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bewerage.Controllers
 {
@@ -26,10 +20,5 @@ namespace Bewerage.Controllers
             return View(homeViewModel);
         }
 
-        #region old Code
-
-
-      
-        #endregion
     }
 }
