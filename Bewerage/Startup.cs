@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,10 +21,7 @@ namespace Bewerage
 {
     public class Startup
     {
-        //public Startup(IConfiguration configuration)
-        //{
-        //    Configuration = configuration;
-        //}
+
 
         private IConfigurationRoot _configurationRoot;
         public Startup(IHostingEnvironment hostingEnvironment)
@@ -43,12 +41,17 @@ namespace Bewerage
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(_configurationRoot.GetConnectionString("DefaultConnection")));
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>(); 
+
             services.AddTransient<IDrinkRepository, DrinkRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<IOrderRepository, OrderRepository>(); 
-
+            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped(sp => ShoppingCart.GetCart(sp)); 
+            services.AddScoped(sp => ShoppingCart.GetCart(sp));
+
+            services.AddTransient<IOrderRepository, OrderRepository>();
+
 
             services.AddMvc();
             services.AddMemoryCache();
@@ -65,7 +68,7 @@ namespace Bewerage
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseSession();
-            app.UseIdentity(); 
+            app.UseAuthentication();
 
             //app.UseMvcWithDefaultRoute();
 

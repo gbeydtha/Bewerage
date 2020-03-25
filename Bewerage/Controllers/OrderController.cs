@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bewerage.Data.Interfaces;
 using Bewerage.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bewerage.Controllers
@@ -17,12 +18,15 @@ namespace Bewerage.Controllers
             _orderRepository = orderRepository;
             _shoppingCart = shoppingCart; 
         }
+
+        [Authorize]
         public IActionResult CheckOut()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult CheckOut( Order order)
         {
             var items = _shoppingCart.GetShoppingCartItems();
